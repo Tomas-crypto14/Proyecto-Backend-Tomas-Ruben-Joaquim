@@ -1,4 +1,4 @@
-const { Votes } = require("../models/votes.model");
+const { Vote } = require("../models/votes.model");
 //const bcryptjs = require("bcryptjs");
 //const jsonwebtoken = require("jsonwebtoken");
 //const { JWT_SECRET } = require("../config");
