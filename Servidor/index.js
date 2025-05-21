@@ -9,7 +9,7 @@ const { dbConnection } = require("./db");
 //const recipesRoutes = require("./routes/recipes.routes");
 //const ingredientsRoutes = require("./routes/ingredients.routes");
 const usersRoutes = require("./routes/users.routes");
-
+console.log(process.env.MONGO_URI);
 const main = () => {
     const app = express();
     app.use(cors());
