@@ -3,6 +3,7 @@ const { Poll } = require("../models/polls.model");
 const getPolls = async (req, res) => {
     try {
         const polls = await Poll.find({});
+        console.log("Polls from DB:", polls);
         const parsedPolls = polls.map((poll) => ({
             _id: poll._id,
             title: poll.question,

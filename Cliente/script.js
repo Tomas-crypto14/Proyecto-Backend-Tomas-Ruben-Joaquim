@@ -1,110 +1,143 @@
-// script.js
 const API_BASE = "http://localhost:8000";
 
-// Referencias al DOM
-const votingsListSection = document.getElementById("votings-list");
+// Referencias a elementos HTML importantes
 const votingsListEl = document.getElementById("votings");
 const votingDetailSection = document.getElementById("voting-detail");
+const votingsListSection = document.getElementById("votings-list");
 const votingInfoEl = document.getElementById("voting-info");
 const voteForm = document.getElementById("vote-form");
 const optionSelect = document.getElementById("option");
 const backBtn = document.getElementById("back-btn");
+const votesChartCanvas = document.getElementById("votesChart");
 
-let pollsCache = [];
-let currentPoll = null;
+let currentVotingId = null; // guardamos id de votación seleccionada
+let votesChart = null; // variable para el gráfico de barras
 
-// 1) Carga todas las encuestas
-function fetchPolls() {
-    fetch(`${API_BASE}/polls/getpolls`)
-        .then((res) => {
-            if (!res.ok) throw new Error(`Error ${res.status}`);
-            return res.json();
+// Función para cargar y mostrar la lista de votaciones
+function fetchVotings() {
+    fetch(`${API_BASE}/polls/getpolls`) // pedimos las votaciones a la API
+        .then((res) => res.json())
+        .then((votings) => {
+            votingsListEl.innerHTML = "";
+
+            votings.forEach((voting) => {
+                const li = document.createElement("li");
+                li.textContent = voting.title || "Votación sin título";
+                li.onclick = () => loadVotingDetail(voting._id);
+                votingsListEl.appendChild(li);
+            });
         })
+        .catch(() => alert("Error al cargar votaciones")); // si falla, aviso al usuario
+}
+
+// Función para mostrar el detalle de una votación
+function loadVotingDetail(id) {
+    fetch(`${API_BASE}/polls/getpolls`) // pedimos todas las votaciones
+        .then((res) => res.json())
         .then((polls) => {
-            pollsCache = polls;
-            renderPollsList();
+            const voting = polls.find((p) => p._id === id); // buscamos la votación por id
+
+            if (!voting) {
+                alert("Votación no encontrada");
+                return;
+            }
+
+            currentVotingId = voting._id; // guardamos id actual
+
+            // Ocultamos lista de votaciones y mostramos detalle
+            votingsListSection.style.display = "none";
+            votingDetailSection.style.display = "block";
+
+            // Creamos el contenido HTML para mostrar opciones y votos
+            let optionsHTML = "";
+            let selectHTML = "";
+            let labels = [];
+            let votes = [];
+
+            voting.options.forEach((opt, i) => {
+                const name = opt.name || opt.text || `Opción ${i + 1}`; // nombre opción
+                const voteCount = opt.votes || 0; // votos de la opción
+                optionsHTML += `<li>${name}: ${voteCount} votos</li>`;
+                selectHTML += `<option value="${i}">${name}</option>`;
+                labels.push(name);
+                votes.push(voteCount);
+            });
+
+            // Mostramos la pregunta y las opciones con sus votos
+            votingInfoEl.innerHTML = `<h3>${
+                voting.title || voting.question || "Votación"
+            }</h3><ul>${optionsHTML}</ul>`;
+
+            optionSelect.innerHTML = selectHTML;
+
+            renderChart(labels, votes);
         })
-        .catch((err) => {
-            alert("Error al cargar encuestas");
-            console.error(err);
-        });
+        .catch(() => alert("Error cargando detalle de la votación"));
 }
 
-// 2) Renderiza la lista de encuestas
-function renderPollsList() {
-    votingsListEl.innerHTML = "";
-    pollsCache.forEach((poll) => {
-        const li = document.createElement("li");
-        li.textContent = poll.title;
-        li.dataset.id = poll._id;
-        li.onclick = () => showDetail(poll._id);
-        votingsListEl.appendChild(li);
-    });
-}
-
-// 3) Muestra detalle usando el cache
-function showDetail(id) {
-    const poll = pollsCache.find((p) => p._id === id);
-    if (!poll) return alert("Encuesta no encontrada");
-
-    currentPoll = poll;
-
-    // Esconder lista y mostrar detalle
-    votingsListSection.classList.add("hidden");
-    votingDetailSection.classList.remove("hidden");
-
-    votingInfoEl.innerHTML = `
-  <h3>${poll.title}</h3>
-  <ul>
-    ${poll.options
-        .map((opt) => `<li>${opt.name}: ${opt.votes} votos</li>`)
-        .join("")}
-  </ul>
-`;
-
-    // Opciones
-    optionSelect.innerHTML = "";
-    poll.options.forEach((opt, idx) => {
-        const optEl = document.createElement("option");
-        optEl.value = idx;
-        optEl.textContent = `${opt.name} (${opt.votes} votos)`;
-        optionSelect.appendChild(optEl);
-    });
-}
-
-// 4) Enviar voto
+// Evento al enviar formulario de voto
 voteForm.onsubmit = (e) => {
-    e.preventDefault();
-    if (!currentPoll) return;
+    e.preventDefault(); // evitamos que se recargue la página
 
-    const idx = optionSelect.value;
-    fetch(`${API_BASE}/votes/${currentPoll._id}`, {
+    if (!currentVotingId) {
+        alert("No hay votación seleccionada");
+        return;
+    }
+
+    const optionIndex = parseInt(optionSelect.value); // índice opción elegida
+
+    // Mandamos la petición para votar
+    fetch(`${API_BASE}/votes/${currentVotingId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ optionIndex: idx }),
+        body: JSON.stringify({ optionIndex }),
     })
         .then((res) => {
-            if (!res.ok) throw new Error(`Error ${res.status}`);
+            if (!res.ok) throw new Error("Error enviando voto");
             return res.json();
         })
-        .then(() => {
-            alert("Voto registrado");
-            // Incrementamos localmente y refrescamos el detalle
-            currentPoll.options[idx].votes++;
-            showDetail(currentPoll._id);
+        .then((data) => {
+            alert(data.message || "Voto registrado");
+            loadVotingDetail(currentVotingId); // recargamos el detalle para ver cambios
         })
-        .catch((err) => {
-            alert("Error al enviar el voto");
-            console.error(err);
-        });
+        .catch((e) => alert(e.message));
 };
 
-// 5) Volver a la lista
+// Botón para volver a la lista de votaciones
 backBtn.onclick = () => {
-    votingDetailSection.classList.add("hidden");
-    votingsListSection.classList.remove("hidden");
-    currentPoll = null;
+    votingDetailSection.style.display = "none";
+    votingsListSection.style.display = "block";
+    currentVotingId = null;
+
+    // Si existe gráfico, lo borramos para limpiar
+    if (votesChart) {
+        votesChart.destroy();
+        votesChart = null;
+    }
 };
 
-// 6) Inicializamos
-fetchPolls();
+// Función para crear el gráfico de barras con Chart.js
+function renderChart(labels, votes) {
+    if (votesChart) votesChart.destroy(); // si hay gráfico anterior, eliminarlo
+
+    votesChart = new Chart(votesChartCanvas, {
+        type: "bar",
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: "Votos",
+                    data: votes,
+                    backgroundColor: "rgba(54, 162, 235, 0.7)",
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    borderWidth: 1,
+                },
+            ],
+        },
+        options: {
+            scales: { y: { beginAtZero: true, precision: 0 } },
+        },
+    });
+}
+
+fetchVotings();
