@@ -2,8 +2,8 @@ const port = 8000;
 
 const cors = require("cors");
 const express = require("express");
-const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./swagger-output.json");
+// const swaggerUi = require("swagger-ui-express");
+// const swaggerDocument = require("./swagger-output.json");
 const { dbConnection } = require("./db");
 
 const votesRoutes = require("./routes/votes.routes");
