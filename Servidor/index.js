@@ -9,7 +9,8 @@ const { dbConnection } = require("./db");
 //const recipesRoutes = require("./routes/recipes.routes");
 //const ingredientsRoutes = require("./routes/ingredients.routes");
 const usersRoutes = require("./routes/users.routes");
-
+const votesRoutes = require("./routes/votes.routes");
+const pollsRoutes = require("./routes/polls.routes");
 const main = () => {
     const app = express();
     app.use(cors());
@@ -18,6 +19,8 @@ const main = () => {
     //app.use("/recipes", auth, recipesRoutes);
     //app.use("/ingredients", auth, ingredientsRoutes);
     app.use("/", usersRoutes);
+    app.use("/votes", votesRoutes);
+    app.use("/polls", pollsRoutes);
     //app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
     dbConnection();
