@@ -1,5 +1,4 @@
 const swaggerAutogen = require("swagger-autogen")();
-const { port } = require("./index");
 
 const doc = {
     info: {
@@ -7,8 +6,7 @@ const doc = {
         description: "Descripcion a añadir",
         version: "1.0.0 Alpha",
     },
-    host: `localhost:${port}`,
-    // host: "localhost:8080",
+    host: "localhost:8000",
 };
 
 const outputFile = "./swagger-output.json";
