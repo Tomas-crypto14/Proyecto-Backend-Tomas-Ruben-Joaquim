@@ -1,34 +1,38 @@
 const { Poll } = require("../models/polls.model");
 
 const getPolls = async (req, res) => {
-    try {
-        const polls = await Poll.find();
-        const parsedPolls = polls.map((poll) => ({
-            id: poll.id,
-            title: poll.title,
-            description: poll.description,
-        }));
-        res.send(parsedPolls);
-    } catch (error) {
-        res.status(500).json({ error: "Error al obtener las encuestas" });
-    }
+    const polls = await Poll.findAll({});
+    const parsedPolls = polls.map((pool) => {
+        return {
+            id: pool.id,
+            title: pool.title,
+            description: pool.description,
+        };
+    });
+
+    res.send(parsedPolls);
 };
 
 const registerPolls = async (req, res) => {
-    const { id, title, description } = req.body;
-
+    const question = req.body.question;
+    const options = req.body.options;
     try {
         const createdPoll = new Poll({
-            id,
-            title,
-            description,
+            question: question,
+            options: options,
+            voted: new Array(),
         });
         await createdPoll.save();
         res.status(201).send("Poll registered");
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Error al registrar la encuesta" });
+        if (error) {
+            res.status(500).send(error);
+        } else {
+            res.status(500).send("Unexpected error");
+        }
     }
+    //res.status(201).send({ id: createdMember.id });
 };
 
 module.exports = { getPolls, registerPolls };

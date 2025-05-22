@@ -15,11 +15,14 @@
   },
   "homepage": "https://github.com/Tomas-crypto14/Proyecto-Backend-Tomas-Ruben-Joaquim#readme",
   "description": "",
+  "type": "commonjs",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "mongoose": "^8.15.0"
+    "mongoose": "^8.15.0",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1"
   }
 }
