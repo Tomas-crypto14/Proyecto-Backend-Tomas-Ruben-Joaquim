@@ -1,21 +1,18 @@
 const { Poll } = require("../models/polls.model");
 
-const getPolls = async (req, res) => {
-    const polls = await Poll.findAll({
-    });
+const getpolls = async (req, res) => {
+    const polls = await Poll.findAll({});
     const parsedPolls = polls.map((pool) => {
         return {
-            id: pool.id,
             title: pool.title,
             description: pool.description,
-        }
+        };
     });
 
-
     res.send(parsedPolls);
-}
+};
 
-const registerPolls = async (req, res) => {
+const registerpolls = async (req, res) => {
     //+ Recibir usuario y password
     // Hashear password
     // Guardar usuario en la db
@@ -42,7 +39,4 @@ const registerPolls = async (req, res) => {
     //res.status(201).send({ id: createdMember.id });
 };
 
-
-
-
-module.exports = { getPolls, registerPolls }
+module.exports = { getpolls, registerpolls };
