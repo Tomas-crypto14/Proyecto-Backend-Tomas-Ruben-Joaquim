@@ -1,11 +1,12 @@
 const { Poll } = require("../models/polls.model");
 
 const getPolls = async (req, res) => {
-    const polls = await Poll.findAll({});
+    const polls = await Poll.find({});
     const parsedPolls = polls.map((pool) => {
         return {
-            title: pool.title,
-            description: pool.description,
+            id: pool.id,
+            question: pool.question,
+            options: pool.options,
         };
     });
 

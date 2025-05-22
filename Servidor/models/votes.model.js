@@ -12,7 +12,7 @@ const votesSchema = new Schema({
         required: true,
     },
     options: [optionSchema],
-    voted: array,
+    voted: new Array(),
 });
 const Vote = mongoose.model("Votes", votesSchema);
 
