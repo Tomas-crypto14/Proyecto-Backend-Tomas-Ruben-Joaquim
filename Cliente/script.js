@@ -27,7 +27,7 @@ function fetchVotings() {
                 votingsListEl.appendChild(li);
             });
         })
-        .catch(() => alert("Error al cargar votaciones")); // si falla, aviso al usuario
+        .catch(() => alert("Error al cargar votaciones"));
 }
 
 // Función para mostrar el detalle de una votación
@@ -77,30 +77,40 @@ function loadVotingDetail(id) {
 
 // Evento al enviar formulario de voto
 voteForm.onsubmit = (e) => {
-    e.preventDefault(); // evitamos que se recargue la página
+    e.preventDefault();
 
     if (!currentVotingId) {
         alert("No hay votación seleccionada");
         return;
     }
 
-    const optionIndex = parseInt(optionSelect.value); // índice opción elegida
+    const optionIndex = parseInt(optionSelect.value);
 
-    // Mandamos la petición para votar
     fetch(`${API_BASE}/votes/${currentVotingId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ optionIndex }),
     })
-        .then((res) => {
-            if (!res.ok) throw new Error("Error enviando voto");
+        .then(async (res) => {
+            // Si la respuesta no es ok, leemos el JSON para obtener el error
+            if (!res.ok) {
+                const errorData = await res.json();
+                // Aquí chequeamos el error específico devuelto por backend
+                if (res.status === 403 && errorData.error === "Ya has votado") {
+                    throw new Error("Ya has votado en esta votación.");
+                } else {
+                    throw new Error(errorData.error || "Error enviando voto");
+                }
+            }
             return res.json();
         })
         .then((data) => {
             alert(data.message || "Voto registrado");
-            loadVotingDetail(currentVotingId); // recargamos el detalle para ver cambios
+            loadVotingDetail(currentVotingId);
         })
-        .catch((e) => alert(e.message));
+        .catch((e) => {
+            alert(e.message);
+        });
 };
 
 // Botón para volver a la lista de votaciones
