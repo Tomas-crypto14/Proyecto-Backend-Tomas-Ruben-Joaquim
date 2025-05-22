@@ -53,11 +53,14 @@ function showDetail(id) {
     votingsListSection.classList.add("hidden");
     votingDetailSection.classList.remove("hidden");
 
-    // Info básica
     votingInfoEl.innerHTML = `
-    <h3>${poll.title}</h3>
-    <p>${poll.description || ""}</p>
-  `;
+  <h3>${poll.title}</h3>
+  <ul>
+    ${poll.options
+        .map((opt) => `<li>${opt.name}: ${opt.votes} votos</li>`)
+        .join("")}
+  </ul>
+`;
 
     // Opciones
     optionSelect.innerHTML = "";
