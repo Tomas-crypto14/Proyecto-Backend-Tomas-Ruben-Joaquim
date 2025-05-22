@@ -1,48 +1,34 @@
 const { Poll } = require("../models/polls.model");
 
 const getPolls = async (req, res) => {
-    const polls = await Poll.findAll({
-    });
-    const parsedPolls = polls.map((pool) => {
-        return {
-            id: pool.id,
-            title: pool.title,
-            description: pool.description,
-        }
-    });
-
-
-    res.send(parsedPolls);
-}
+    try {
+        const polls = await Poll.find();
+        const parsedPolls = polls.map((poll) => ({
+            id: poll.id,
+            title: poll.title,
+            description: poll.description,
+        }));
+        res.send(parsedPolls);
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener las encuestas" });
+    }
+};
 
 const registerPolls = async (req, res) => {
-    //+ Recibir usuario y password
-    // Hashear password
-    // Guardar usuario en la db
-    const id = req.body.id;
-    const title = req.body.title;
-    const description = req.body.description;
+    const { id, title, description } = req.body;
+
     try {
         const createdPoll = new Poll({
-            id: id,
-            title: title,
-            description: description,
+            id,
+            title,
+            description,
         });
         await createdPoll.save();
-        //const hashedPassword = bcryptjs.hashSync(password);
         res.status(201).send("Poll registered");
     } catch (error) {
         console.error(error);
-        if (error) {
-            res.status(500).send(error);
-        } else {
-            res.status(500).send("Unexpected error");
-        }
+        res.status(500).json({ error: "Error al registrar la encuesta" });
     }
-    //res.status(201).send({ id: createdMember.id });
 };
 
-
-
-
-module.exports = { getPolls, registerPolls }
+module.exports = { getPolls, registerPolls };

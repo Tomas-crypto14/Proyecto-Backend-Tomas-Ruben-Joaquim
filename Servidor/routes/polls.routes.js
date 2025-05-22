@@ -1,10 +1,9 @@
 const express = require("express");
-
 const router = express.Router();
-const { getpolls, registerpolls } = require("../controllers/polls.controllers");
 
+const { getPolls, registerPolls } = require("../controllers/polls.controllers");
 
-router.post("/register", registerpolls);
-router.get("/getpolls", getpolls);
+router.post("/", registerPolls);
+router.get("/", getPolls);
 
 module.exports = router;

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Cliente API de Votaciones</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Votaciones</h1>
+
+            <section id="votings-list">
+                <h2>Lista de votaciones</h2>
+                <ul id="votings"></ul>
+            </section>
+
+            <section id="voting-detail" class="hidden">
+                <h2>Detalle de votación</h2>
+                <div id="voting-info"></div>
+                <form id="vote-form">
+                    <label for="option">Selecciona opción:</label>
+                    <select id="option" name="option"></select>
+                    <button type="submit">Votar</button>
+                </form>
+                <button id="back-btn">Volver a la lista</button>
+            </section>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
