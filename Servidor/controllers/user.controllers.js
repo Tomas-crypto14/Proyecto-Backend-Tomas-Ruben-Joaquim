@@ -53,8 +53,8 @@ const register = async (req, res) => {
         res.status(201).send("User registered");
     } catch (error) {
         console.error(error);
-        if (error) {
-            res.status(500).send(error);
+        if (error.errorResponse.errmsg) {
+            res.status(500).send(error.Response.errmsg);
         } else {
             res.status(500).send("Unexpected error");
         }
