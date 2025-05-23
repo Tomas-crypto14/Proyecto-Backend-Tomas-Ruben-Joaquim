@@ -7,16 +7,12 @@ const register = async (req, res) => {
     //+ Recibir usuario y password
     // Hashear password
     // Guardar usuario en la db
-    const id = req.body.id;
-    const question = req.body.question;
+    const questions = req.body.questions;
     const options = req.body.options;
-    const timestamp = req.body.timestamp;
     try {
         const createdVote = new Vote({
-            id: id,
-            question: question,
+            questions: questions,
             options: options,
-            timestamp: timestamp
         });
         await createdVote.save();
         //const hashedPassword = bcryptjs.hashSync(password);
@@ -31,4 +27,13 @@ const register = async (req, res) => {
     }
     //res.status(201).send({ id: createdMember.id });
 };
-module.exports = { register };
+
+const votings = async (req, res) => {
+    const { id } = req.params;
+    const votes = await Vote.findById(id);
+    if (!votes) {
+        return res.status(404).json({ error: "Voto no encontrado" });
+    }
+    res.json(votes);
+};
+module.exports = { register, votings };

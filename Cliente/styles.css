@@ -1,0 +1,76 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+h1,
+h2 {
+    text-align: center;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+
+li:hover {
+    background: #e0e7ff;
+}
+
+.hidden {
+    display: none;
+}
+
+button {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #4f46e5;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4338ca;
+}
+
+button:disabled {
+    background-color: #dddce8;
+}
+
+form {
+    margin-top: 15px;
+}
+
+#optionsDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+}
+
+.optionQuest {
+    margin-left: 150px;
+    margin-right: 150px;
+}
+
+#optionsTextMenu {
+    text-align: center;
+}

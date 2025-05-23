@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Cliente API de Votaciones</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Votaciones</h1>
+
+            <section id="votings-list">
+                <h2>Lista de votaciones</h2>
+                <ul id="votings"></ul>
+            </section>
+
+            <section id="voting-detail" class="hidden">
+                <h2>Detalle de votación</h2>
+                <div id="voting-info"></div>
+                <form id="vote-form">
+                    <label for="option">Selecciona opción:</label>
+                    <select id="option" name="option"></select>
+                    <button type="submit">Votar</button>
+                </form>
+                <button id="back-btn">Volver a la lista</button>
+            </section>
+        </div>
+        <br />
+        <div class="container">
+            <h2>Nueva votaci&oacute;n</h2>
+            <button type="button" id="newQuestionBttn" disabled>
+                Nueva Votaci&oacute;n
+            </button>
+            <br />
+            <br />
+            <b>Cuesti&oacute;n a votar:</b>
+            <input
+                type="text"
+                id="questionText"
+                placeholder="Insertar cuesti&oacute;n"
+            />
+            <br />
+            <br />
+            <div id="optionsNewQuestion" hidden>
+                <p id="optionsTextMenu"><b>Opciones</b></p>
+                <div id="optionsDiv">
+                    <input
+                        type="text"
+                        class="optionQuest"
+                        placeholder="Inserta una opción"
+                    />
+                    <input
+                        type="text"
+                        class="optionQuest"
+                        placeholder="Inserta una opción"
+                    />
+                </div>
+                <br />
+                <button id="addOption">+ Opci&oacute;n</button>
+                <button id="removeOption" hidden>- Opci&oacute;n</button>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>

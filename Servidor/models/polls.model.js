@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const { Schema } = require("mongoose");
+
 const pollSchema = new Schema({
     question: { type: String, required: true },
     options: {
