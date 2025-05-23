@@ -1,9 +1,14 @@
 const express = require("express");
-
 const router = express.Router();
-const { register } = require("../controllers/votes.controllers");
-const { votings } = require("../controllers/votes.controllers");
+const {
+    register,
+    getAllVotings,
+    votings,
+    vote,
+} = require("../controllers/votes.controllers");
 
 router.post("/register", register);
+router.get("/votings", getAllVotings);
 router.get("/votings/:id", votings);
+router.patch("/:id", vote);
 module.exports = router;

@@ -1,19 +1,27 @@
 const { Poll } = require("../models/polls.model");
 
 const getPolls = async (req, res) => {
-    const polls = await Poll.find({});
-    const parsedPolls = polls.map((poll) => {
-        return {
-            id: poll.id,
-            question: poll.question,
-            options: poll.options,
-        };
-    });
+    try {
+        const polls = await Poll.find({});
+        console.log("Polls from DB:", polls);
+        const parsedPolls = polls.map((poll) => ({
+            _id: poll._id,
+            title: poll.question,
+            options: Object.entries(poll.options).map(([name, votes]) => ({
+                name,
+                votes,
+            })),
+        }));
 
-    res.send(parsedPolls);
+        res.json(parsedPolls);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error al obtener las encuestas");
+    }
 };
 
 const registerPolls = async (req, res) => {
+    console.log("REQ.BODY:", req.body);
     const question = req.body.question;
     const options = req.body.options;
     try {
