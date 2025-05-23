@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const { Schema } = require("mongoose");
 
 const pollSchema = new Schema({
@@ -27,6 +26,6 @@ const pollSchema = new Schema({
     },
     voted: { type: Array, required: false },
 });
-const Poll = mongoose.model("Polls", pollSchema);
 
+const Poll = mongoose.model("Poll", pollSchema);
 module.exports = { Poll };
