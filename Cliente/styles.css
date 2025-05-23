@@ -51,6 +51,26 @@ button:hover {
     background-color: #4338ca;
 }
 
+button:disabled {
+    background-color: #dddce8;
+}
+
 form {
     margin-top: 15px;
+}
+
+#optionsDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+}
+
+.optionQuest {
+    margin-left: 150px;
+    margin-right: 150px;
+}
+
+#optionsTextMenu {
+    text-align: center;
 }

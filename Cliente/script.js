@@ -8,6 +8,12 @@ const votingInfoEl = document.getElementById("voting-info");
 const voteForm = document.getElementById("vote-form");
 const optionSelect = document.getElementById("option");
 const backBtn = document.getElementById("back-btn");
+const questionText = document.getElementById("questionText");
+const newQuestionBttn = document.getElementById("newQuestionBttn");
+const optionsNewQuestion = document.getElementById("optionsNewQuestion");
+const optionsDiv = document.getElementById("optionsDiv");
+const addOption = document.getElementById("addOption");
+const removeOption = document.getElementById("removeOption");
 
 let currentVotingId = null;
 
@@ -90,5 +96,72 @@ backBtn.onclick = function () {
     currentVotingId = null;
 };
 
+//
+//
+//
+
+const comprobeOptionsValue = (elements) => {
+    const values = new Array();
+
+    for (let i = 0; i < elements.length; i++) {
+        values.push(elements[i].value);
+    }
+
+    const hasNoValue = values.some((value) => value === "");
+    if (hasNoValue) {
+        newQuestionBttn.setAttribute("disabled", "");
+    } else {
+        newQuestionBttn.removeAttribute("disabled");
+    }
+
+    //
+};
+
+const newQuestionFunction = () => {
+    if (questionText.value.length < 1) {
+        optionsNewQuestion.hidden = true;
+    } else {
+        optionsNewQuestion.hidden = false;
+    }
+};
+
+const addQuestionOption = () => {
+    const optionInputs = document.getElementsByClassName("optionQuest");
+    const input = document.createElement("input");
+    input.type = "text";
+    input.classList.add("optionQuest");
+    input.placeholder = "Inserta una opción";
+    optionsDiv.append(input);
+    removeOption.hidden = false;
+    comprobeOptionsValue(optionInputs);
+};
+
+const removeQuestionOption = () => {
+    const optionInputs = document.getElementsByClassName("optionQuest");
+    const numOptions = optionInputs.length;
+    if (numOptions == 3) {
+        removeOption.hidden = true;
+    }
+    optionInputs[numOptions - 1].remove();
+    comprobeOptionsValue(optionInputs);
+};
+
+const sendNewQuestion = () => {
+    // ACABAR
+};
+
+// Event Listeners
+questionText.addEventListener("keyup", newQuestionFunction);
+addOption.addEventListener("click", addQuestionOption);
+removeOption.addEventListener("click", removeQuestionOption);
+/* */
+optionsDiv.addEventListener("keyup", (event) => {
+    const optionInputs = document.getElementsByClassName("optionQuest");
+    if (event.target.classList.contains("optionQuest")) {
+        comprobeOptionsValue(optionInputs);
+    }
+});
+
 // Carga inicial
-fetchVotings();
+// fetchVotings();
+//
