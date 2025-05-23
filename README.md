@@ -3,7 +3,7 @@ graph TD
     A[Cliente Web] -->|GET /polls/getpolls| B[Servidor Express]
     A -->|GET /votings| B
     A -->|GET /votings/:id| B
-    A -->|POST /register| B
+    A -->|POST /polls/register| B
     A -->|PATCH /votes/:id| B
 
     B --> C[Controladores]
@@ -28,6 +28,6 @@ graph TD
     end
 
     subgraph Base de Datos
-        F
+    F
     end
 ```

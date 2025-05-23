@@ -92,9 +92,9 @@ const vote = async (req, res) => {
         if (modelType === "Vote") {
             // Si es el modelo Vote, opciones en array (Ruben y Tomas)
             if (
-                optionIndex === undefined || // 1. ¿No se ha proporcionado un índice?
-                optionIndex < 0 || // 2. ¿Es un número negativo? (índice inválido)
-                optionIndex >= voting.options.length // 3. ¿Es mayor o igual al número de opciones disponibles?
+                optionIndex === undefined || // ¿No se ha proporcionado un índice?
+                optionIndex < 0 || // ¿Es un número negativo? (índice inválido)
+                optionIndex >= voting.options.length // ¿Es mayor o igual al número de opciones disponibles?
             ) {
                 return res
                     .status(400)
