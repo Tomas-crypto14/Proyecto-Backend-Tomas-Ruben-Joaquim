@@ -107,6 +107,7 @@ voteForm.onsubmit = (e) => {
         .then((data) => {
             alert(data.message || "Voto registrado");
             loadVotingDetail(currentVotingId);
+            //Tomas se dio cuenta de que la funcion no llamaba a ningun parametro
         })
         .catch((e) => {
             alert(e.message);
