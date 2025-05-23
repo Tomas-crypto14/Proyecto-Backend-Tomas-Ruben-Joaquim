@@ -90,11 +90,11 @@ const vote = async (req, res) => {
         }
 
         if (modelType === "Vote") {
-            // Si es el modelo Vote, opciones en array
+            // Si es el modelo Vote, opciones en array (Ruben y Tomas)
             if (
-                optionIndex === undefined ||
-                optionIndex < 0 ||
-                optionIndex >= voting.options.length
+                optionIndex === undefined || // 1. ¿No se ha proporcionado un índice?
+                optionIndex < 0 || // 2. ¿Es un número negativo? (índice inválido)
+                optionIndex >= voting.options.length // 3. ¿Es mayor o igual al número de opciones disponibles?
             ) {
                 return res
                     .status(400)
@@ -104,7 +104,7 @@ const vote = async (req, res) => {
             // Sumamos 1 al contador de votos de la opción elegida
             voting.options[optionIndex].votes++;
         } else if (modelType === "Poll") {
-            // Si es el modelo Poll, opciones en objeto con clave: valor
+            // Si es el modelo Poll, opciones en objeto con clave: valor (Squema Joaquim)
             const optionKeys = Object.keys(voting.options);
 
             if (
