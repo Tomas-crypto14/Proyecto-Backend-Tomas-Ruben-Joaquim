@@ -147,14 +147,39 @@ const removeQuestionOption = () => {
 };
 
 const sendNewQuestion = () => {
-    // ACABAR
+    const bodyQuest = {};
+    const optionInputs = document.getElementsByClassName("optionQuest");
+
+    for (let i = 0; i < optionInputs.length; i++) {
+        bodyQuest[optionInputs[i].value] = 0;
+    }
+
+    fetch(`${API_BASE}/register`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: {
+            question: questionText.value,
+            options: bodyQuest,
+        },
+    })
+        .then((response) => {
+            if (!response.ok)
+                throw new Error("Error al crear una nueva votación");
+            alert("Votación creada");
+        })
+        .catch((err) => {
+            alert(err.message);
+            console.error(err);
+        });
 };
 
 // Event Listeners
 questionText.addEventListener("keyup", newQuestionFunction);
 addOption.addEventListener("click", addQuestionOption);
 removeOption.addEventListener("click", removeQuestionOption);
-/* */
+newQuestionBttn.addEventListener("click", sendNewQuestion);
 optionsDiv.addEventListener("keyup", (event) => {
     const optionInputs = document.getElementsByClassName("optionQuest");
     if (event.target.classList.contains("optionQuest")) {
