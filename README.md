@@ -1,8 +1,6 @@
 ```mermaid
 graph TD
     A[Cliente Web] -->|GET /polls/getpolls| B[Servidor Express]
-    A -->|GET /votings| B
-    A -->|GET /votings/:id| B
     A -->|POST /polls/register| B
     A -->|PATCH /votes/:id| B
 
