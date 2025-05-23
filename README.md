@@ -5,7 +5,7 @@ graph TD
     A -->|PATCH /votes/:id| B
 
     B --> C[Controladores]
-    C -->|register| D[Modelo Vote]
+    D[Modelo Vote]
     C -->|getAllVotings| D
     C -->|"votings por ID"| D
     C -->|vote| D
